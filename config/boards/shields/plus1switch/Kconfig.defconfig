@@ -1,0 +1,6 @@
+if SHIELD_PLUS1SWITCH
+
+config ZMK_KEYBOARD_NAME
+    default "plus1switch"
+
+    enif
