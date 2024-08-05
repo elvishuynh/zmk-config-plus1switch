@@ -1,2 +1,5 @@
 config SHIELD_PLUS1SWITCH
     def_bool $(shields_list_contains,plus1switch)
+
+    # Enable debug logging
+CONFIG_DRV2605_LOG_LEVEL_DBG=y

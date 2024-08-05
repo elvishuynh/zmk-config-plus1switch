@@ -8,6 +8,45 @@
         label = "default_kscan";
 
         input-gpios =
-            <&pro_micro 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+            <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+
+    };
+
+    /* Haptic driver code below. */
+
+    &pinctrl {
+        i2c0_default: i2c0_default {
+            group1 {
+                psels = <NRF_PSEL(TWIM_SDA, 0, 6)>,
+                        <NRF_PSEL(TWIM_SCL, 0, 4)>;
+            };
+        };
+
+        i2c0_sleep: i2c0_sleep {
+            group1 {
+                psels = <NRF_PSEL(TWIM_SDA, 0, 6)>,
+                        <NRF_PSEL(TWIM_SCL, 0, 4)>;
+                low-power-enable;
+            };
+        };
+    };
+
+    &i2c0 {
+        status = "okay";
+        compatible = "nordic,nrf-twim";
+        pinctrl-0 = <&i2c0_default>;
+        pinctrl-1 = <&i2c0_sleep>;
+        pinctrl-names = "default", "sleep";
+
+        drv2605_0: drv2605@5a {
+            compatible = "ti,drv2605";
+            reg = <0x5a>;
+
+            /* Library to use, 0 = Empty, 1-5 are ERM, 6 is LRA. */
+            library = <6>;
+
+            /* switch to standby mode after idling for 1000ms */
+            standby-ms = <1000>;
+        };
     };
 };
